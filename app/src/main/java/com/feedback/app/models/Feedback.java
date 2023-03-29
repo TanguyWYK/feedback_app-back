@@ -2,25 +2,27 @@ package com.feedback.app.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "feedbacks")
 public class Feedback {
-    @EmbeddedId
-    @PrimaryKeyJoinColumn
-    @Column(insertable=false, updatable=false)
-    private FeedbackId feedbackId;
 
-    @Column(name= "id_criteria", insertable=false, updatable=false)
-    private int criteriaId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_criterion", referencedColumnName = "id")
+    private Criterion criterion;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "id_member",referencedColumnName = "id")
+    private Member member;
 
-    @Column(name= "id_member",insertable=false, updatable=false)
-    private int memberId;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private int value;
 
     @JsonFormat(pattern="yyyy-MM-dd")
