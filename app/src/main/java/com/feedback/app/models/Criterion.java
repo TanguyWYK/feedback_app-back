@@ -5,12 +5,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @Entity
-@Table(name = "criterias")
-public class Criteria {
+@Table(name = "criteria")
+public class Criterion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

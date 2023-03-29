@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-@Data
 @Controller
 public class ManagerController {
     @Autowired
