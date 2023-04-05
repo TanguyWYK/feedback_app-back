@@ -13,5 +13,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "id_manager")
+    private int managerId;
     private String email;
 }

@@ -14,6 +14,6 @@ public class FeedbackDTO {
     int value;
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate date;
-    String criterionName;
+    int criterionId;
     String memberEmail;
 }

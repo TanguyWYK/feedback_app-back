@@ -31,4 +31,15 @@ public class CriterionService {
         }
         return criterionDTOS;
     }
+
+    public Iterable<CriterionDTO> getCriteriaByManagerId(int managerId){
+        Iterable<Criterion> criteria = criterionRepository.findByManagerId(managerId);
+        ArrayList<CriterionDTO> criterionDTOS = new ArrayList<>();
+        for(Criterion criterion : criteria){
+            ModelMapper modelMapper = new ModelMapper();
+            CriterionDTO criterionDTO = modelMapper.map(criterion, CriterionDTO.class);
+            criterionDTOS.add(criterionDTO);
+        }
+        return criterionDTOS;
+    }
 }

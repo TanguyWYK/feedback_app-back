@@ -1,10 +1,8 @@
 package com.feedback.app.services;
 
-import com.feedback.app.dto_out.CriterionDTO;
 import com.feedback.app.dto_out.FeedbackDTO;
-import com.feedback.app.models.Criterion;
 import com.feedback.app.models.Feedback;
-import com.feedback.app.repositories.CriterionRepository;
+import com.feedback.app.models.Member;
 import com.feedback.app.repositories.FeedbackRepository;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -24,10 +21,18 @@ public class FeedbackService {
     private FeedbackRepository feedbackRepository;
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     private CriterionService criterionService;
 
-    public Iterable<FeedbackDTO> getFeedbackByMemberId(int id) {
+    public Iterable<FeedbackDTO> getFeedbacksByMemberId(int id) {
         Iterable<Feedback> feedbacks = feedbackRepository.findByMemberId(id);
+        return buildDTOFromEntity(feedbacks);
+    }
+
+    public Iterable<FeedbackDTO> getFeedbacksByManagerId(int id) {
+        Iterable<Feedback> feedbacks = feedbackRepository.findByMember_ManagerId(id);
         return buildDTOFromEntity(feedbacks);
     }
 
@@ -41,7 +46,6 @@ public class FeedbackService {
         for (Feedback feedback : feedbacks) {
             ModelMapper modelMapper = new ModelMapper();
             FeedbackDTO feedbackDTO = modelMapper.map(feedback, FeedbackDTO.class);
-            feedbackDTO.setCriterionName(feedback.getCriterion().getName());
             feedbackDTO.setMemberEmail(feedback.getMember().getEmail());
             feedbackDTOS.add(feedbackDTO);
         }

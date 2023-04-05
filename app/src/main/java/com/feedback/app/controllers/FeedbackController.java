@@ -1,24 +1,18 @@
 package com.feedback.app.controllers;
 
 import com.feedback.app.dto_out.FeedbackDTO;
-import com.feedback.app.models.Feedback;
-import com.feedback.app.models.Manager;
 import com.feedback.app.services.FeedbackService;
-import com.feedback.app.utilities.UsingJson;
-import lombok.Data;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-
 @Controller
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 public class FeedbackController {
 
     @Autowired
@@ -30,9 +24,15 @@ public class FeedbackController {
         return new ResponseEntity<>(feedbackDTOS, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/feedbacks/{memberId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Iterable<FeedbackDTO>> getFeedbackByMemberId(@PathVariable String memberId) {
-        Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getFeedbackByMemberId(Integer.parseInt(memberId));
+    @GetMapping(value = "/feedbacks/manager/{managerId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<Iterable<FeedbackDTO>> getAllFeedbacksByManagerId(@PathVariable String managerId) {
+        Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getFeedbacksByManagerId(Integer.parseInt(managerId));
+        return new ResponseEntity<>(feedbackDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/feedbacks/member/{memberId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<Iterable<FeedbackDTO>> getFeedbacksByMemberId(@PathVariable String memberId) {
+        Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getFeedbacksByMemberId(Integer.parseInt(memberId));
         return new ResponseEntity<>(feedbackDTOS, HttpStatus.OK);
     }
 
