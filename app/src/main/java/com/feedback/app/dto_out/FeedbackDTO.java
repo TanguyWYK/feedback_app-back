@@ -17,7 +17,7 @@ public class FeedbackDTO {
     int criterionId;
     String memberEmail;
 
-    int managerIdThisMonth;
+    String managerEmailThisMonth;
 
     @Override
     public String toString() {

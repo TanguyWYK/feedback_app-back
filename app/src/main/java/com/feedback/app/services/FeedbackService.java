@@ -50,6 +50,7 @@ public class FeedbackService {
             ModelMapper modelMapper = new ModelMapper();
             FeedbackDTO feedbackDTO = modelMapper.map(feedback, FeedbackDTO.class);
             feedbackDTO.setMemberEmail(feedback.getMember().getEmail());
+            feedbackDTO.setManagerEmailThisMonth(feedback.getManagerThisMonth().getEmail());
             feedbackDTOS.add(feedbackDTO);
         }
 

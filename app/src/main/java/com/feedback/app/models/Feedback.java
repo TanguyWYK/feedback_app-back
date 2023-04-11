@@ -25,8 +25,9 @@ public class Feedback {
     private int id;
     private int value;
 
-    @Column(name = "id_manager_this_month")
-    private int managerIdThisMonth;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "id_manager_this_month",referencedColumnName = "id")
+    private Manager managerThisMonth;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate date;
