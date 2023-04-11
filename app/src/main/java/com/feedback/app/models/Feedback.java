@@ -25,6 +25,9 @@ public class Feedback {
     private int id;
     private int value;
 
+    @Column(name = "id_manager_this_month")
+    private int managerIdThisMonth;
+
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate date;
 

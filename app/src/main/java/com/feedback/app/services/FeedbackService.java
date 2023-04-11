@@ -10,7 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -31,10 +33,11 @@ public class FeedbackService {
         return buildDTOFromEntity(feedbacks);
     }
 
-    public Iterable<FeedbackDTO> getFeedbacksByManagerId(int id) {
-        Iterable<Feedback> feedbacks = feedbackRepository.findByMember_ManagerId(id);
+    public Iterable<FeedbackDTO> getFeedbacksByManagerIdAndDateStartAndDateEnd(int id, LocalDate dateStart, LocalDate dateEnd) {
+        Iterable<Feedback> feedbacks = feedbackRepository.findAllByDateBetweenAndMember_ManagerId(dateStart,dateEnd,id);
         return buildDTOFromEntity(feedbacks);
     }
+
 
     public Iterable<FeedbackDTO> getAllFeedbacks() {
         Iterable<Feedback> feedbacks = feedbackRepository.findAll();
@@ -49,6 +52,9 @@ public class FeedbackService {
             feedbackDTO.setMemberEmail(feedback.getMember().getEmail());
             feedbackDTOS.add(feedbackDTO);
         }
+
         return feedbackDTOS;
     }
+
+
 }

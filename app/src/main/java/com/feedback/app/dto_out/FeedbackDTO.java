@@ -16,4 +16,11 @@ public class FeedbackDTO {
     LocalDate date;
     int criterionId;
     String memberEmail;
+
+    int managerIdThisMonth;
+
+    @Override
+    public String toString() {
+        return date + " " + memberEmail + " criterionId: " + criterionId + " value:" + value;
+    }
 }

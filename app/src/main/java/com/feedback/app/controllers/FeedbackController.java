@@ -10,6 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @CrossOrigin(origins = "http://127.0.0.1:3000")
@@ -18,19 +24,26 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
-    @GetMapping(value = "/feedbacks",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/feedbacks", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Iterable<FeedbackDTO>> getAllFeedbacks() {
         Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getAllFeedbacks();
         return new ResponseEntity<>(feedbackDTOS, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/feedbacks/manager/{managerId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Iterable<FeedbackDTO>> getAllFeedbacksByManagerId(@PathVariable String managerId) {
-        Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getFeedbacksByManagerId(Integer.parseInt(managerId));
+    @GetMapping(value = "/feedbacks/manager/{managerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<Iterable<FeedbackDTO>> getAllFeedbacksByManagerIdFromDateStartToDateEnd(
+            @PathVariable String managerId, @RequestParam(name="start") String dateStart, @RequestParam(name="end") String dateEnd) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate date1 = LocalDate.parse(dateStart, dateFormatter);
+        LocalDate date2 = LocalDate.parse(dateEnd, dateFormatter);
+        Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getFeedbacksByManagerIdAndDateStartAndDateEnd(
+                Integer.parseInt(managerId),
+                date1,
+                date2);
         return new ResponseEntity<>(feedbackDTOS, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/feedbacks/member/{memberId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/feedbacks/member/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Iterable<FeedbackDTO>> getFeedbacksByMemberId(@PathVariable String memberId) {
         Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getFeedbacksByMemberId(Integer.parseInt(memberId));
         return new ResponseEntity<>(feedbackDTOS, HttpStatus.OK);
