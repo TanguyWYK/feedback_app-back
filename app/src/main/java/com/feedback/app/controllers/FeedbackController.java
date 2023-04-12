@@ -1,5 +1,6 @@
 package com.feedback.app.controllers;
 
+import com.feedback.app.dto_in.FeedbackPostDTO;
 import com.feedback.app.dto_out.FeedbackDTO;
 import com.feedback.app.services.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -47,6 +43,12 @@ public class FeedbackController {
     ResponseEntity<Iterable<FeedbackDTO>> getFeedbacksByMemberId(@PathVariable String memberId) {
         Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getFeedbacksByMemberId(Integer.parseInt(memberId));
         return new ResponseEntity<>(feedbackDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/feedback",produces = MediaType.APPLICATION_JSON_VALUE)
+    FeedbackDTO postFeedback(FeedbackPostDTO feedbackPostDTO) {
+        System.out.println(feedbackPostDTO);
+        return feedbackService.createFeedback(feedbackPostDTO);
     }
 
 }

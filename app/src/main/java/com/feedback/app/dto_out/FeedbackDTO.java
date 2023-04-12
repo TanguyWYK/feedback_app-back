@@ -11,13 +11,15 @@ import java.time.LocalDate;
 @Getter
 @Component
 public class FeedbackDTO {
-    int value;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    LocalDate date;
-    int criterionId;
-    String memberEmail;
 
-    String managerEmailThisMonth;
+    private int id;
+    private int value;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+    private int criterionId;
+    private String memberEmail;
+
+    private String managerEmailThisMonth;
 
     @Override
     public String toString() {
