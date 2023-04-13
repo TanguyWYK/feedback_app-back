@@ -9,11 +9,15 @@ import lombok.Setter;
 @Entity
 @Table(name = "managers")
 public class Manager {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String email;
+
+    @Override
+    public String toString(){
+        return "id:"+id+" email:"+email;
+    }
 
 }

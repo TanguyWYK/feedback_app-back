@@ -17,7 +17,6 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
-
     public Iterable<MemberDTO> getMembersByManagerId(int managerId){
         Iterable<Member> members = memberRepository.findByManagerId(managerId);
         return buildDTOsFromEntity(members);

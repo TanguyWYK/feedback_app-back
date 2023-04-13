@@ -1,11 +1,16 @@
 package com.feedback.app.services;
 
+import com.feedback.app.dto_in.FeedbackPatchDTO;
 import com.feedback.app.dto_in.FeedbackPostDTO;
 import com.feedback.app.dto_out.FeedbackDTO;
 import com.feedback.app.models.Criterion;
 import com.feedback.app.models.Feedback;
+import com.feedback.app.models.Manager;
 import com.feedback.app.models.Member;
+import com.feedback.app.repositories.CriterionRepository;
 import com.feedback.app.repositories.FeedbackRepository;
+import com.feedback.app.repositories.ManagerRepository;
+import com.feedback.app.repositories.MemberRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -23,6 +29,15 @@ public class FeedbackService {
 
     @Autowired
     private FeedbackRepository feedbackRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private ManagerRepository managerRepository;
+
+    @Autowired
+    private CriterionRepository criterionRepository;
 
     @Autowired
     private MemberService memberService;
@@ -46,16 +61,38 @@ public class FeedbackService {
         return buildDTOsFromEntity(feedbacks);
     }
 
-    public FeedbackDTO createFeedback(FeedbackPostDTO feedbackPostDTO){
+    public FeedbackDTO getFeedbackById(int id) {
+        Optional<Feedback> feedback = feedbackRepository.findById(id);
+        return buildDTOFromEntity(feedback.get());
+    }
 
+    public FeedbackDTO createFeedback(FeedbackPostDTO feedbackPostDTO){
         Feedback feedback = new Feedback();
-        Criterion criterion = new Criterion(feedbackPostDTO.getCriterionId(),feedbackPostDTO.getManagerId());
-        Member member = new Member(feedbackPostDTO.getMemberId(),feedbackPostDTO.getManagerId());
-        feedback.setCriterion(criterion);
-        feedback.setMember(member);
-        feedback.setValue(feedbackPostDTO.getValue());
-        Feedback feedbackAdded = feedbackRepository.save(feedback);
-        return buildDTOFromEntity(feedbackAdded);
+        Optional<Criterion> criterion = criterionRepository.findById(feedbackPostDTO.getCriterionId());
+        Optional<Member> member = memberRepository.findById(feedbackPostDTO.getMemberId());
+        Optional<Manager> manager = managerRepository.findById(feedbackPostDTO.getManagerId());
+        if(criterion.isPresent() && member.isPresent() && manager.isPresent()) {
+            feedback.setCriterion(criterion.get());
+            feedback.setMember(member.get());
+            feedback.setManagerThisMonth(manager.get());
+            feedback.setValue(feedbackPostDTO.getValue());
+            feedback.setDate(feedbackPostDTO.getDate());
+            Feedback feedbackAdded = feedbackRepository.save(feedback);
+            return buildDTOFromEntity(feedbackAdded);
+        }
+        return null;
+    }
+
+    public FeedbackDTO updateFeedback(FeedbackPatchDTO feedbackPatchDTO){
+        Optional<Feedback> feedback = feedbackRepository.findById(feedbackPatchDTO.getId());
+        if(feedback.isPresent()){
+            Feedback feedbackToUpdate = feedback.get();
+            feedbackToUpdate.setValue(feedbackPatchDTO.getValue());
+            Feedback feedbackAdded = feedbackRepository.save(feedbackToUpdate);
+            return buildDTOFromEntity(feedbackAdded);
+        }else{
+            return null;
+        }
     }
 
     private Iterable<FeedbackDTO> buildDTOsFromEntity(Iterable<Feedback> feedbacks) {

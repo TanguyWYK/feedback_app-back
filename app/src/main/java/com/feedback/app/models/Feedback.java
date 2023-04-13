@@ -32,5 +32,10 @@ public class Feedback {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate date;
 
+    @Override
+    public String toString(){
+        return "Member:"+member.toString()+" Criterion:"+criterion.toString()+" Date:"+date+" ManagerThisMonth:"+managerThisMonth.toString()+" id:"+id;
+    }
+
 }
 

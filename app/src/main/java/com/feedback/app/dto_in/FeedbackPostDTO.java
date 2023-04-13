@@ -18,4 +18,9 @@ public class FeedbackPostDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
+    @Override
+    public String toString(){
+        return "ManagerId:"+managerId+" CriterionId:"+criterionId+" MemberId:"+memberId+" Value:"+value+" Date:"+date;
+    }
+
 }

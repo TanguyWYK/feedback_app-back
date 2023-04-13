@@ -9,10 +9,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "members")
 public class Member {
-    public Member(int id, int managerId){
-        this.id = id;
-        this.managerId = managerId;
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

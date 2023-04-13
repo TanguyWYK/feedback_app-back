@@ -10,11 +10,6 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "criteria")
 public class Criterion {
-
-    public Criterion(int id, int managerId){
-        this.setId(id);
-        this.setManagerId(managerId);
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
