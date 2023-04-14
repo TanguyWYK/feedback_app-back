@@ -37,7 +37,7 @@ public class FeedbackController {
     @GetMapping(value = "/feedbacks/manager/{managerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Iterable<FeedbackDTO>> getAllFeedbacksByManagerIdFromDateStartToDateEnd(
             @PathVariable String managerId, @RequestParam(name = "start") String dateStart, @RequestParam(name = "end") String dateEnd) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date1 = LocalDate.parse(dateStart, dateFormatter);
         LocalDate date2 = LocalDate.parse(dateEnd, dateFormatter);
         Iterable<FeedbackDTO> feedbackDTOS = feedbackService.getFeedbacksByManagerIdAndDateStartAndDateEnd(
